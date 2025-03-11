@@ -7,20 +7,27 @@ class PokemonCard extends StatelessWidget {
   final int id;
   final String name;
   final String image;
+  final bool isFavorite;
+  final Function onFavoriteToggle;
+
   const PokemonCard({
     super.key,
     required this.id,
     required this.name,
     required this.image,
+    required this.isFavorite,
+    required this.onFavoriteToggle,
   });
+
   BoxDecoration getContainerDecoration() => BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(7),
         border: Border.all(
-          color: Colors.grey.withOpacity(0.24),
+          color: Colors.grey,
           width: 1,
         ),
       );
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -42,7 +49,23 @@ class PokemonCard extends StatelessWidget {
           child: Stack(
             children: [
               PokemonCardBackground(id: id),
-              PokemonCardData(name: name, image: image),
+              SizedBox(
+                height: 170,
+                width: 170,
+                child: PokemonCardData(name: name, image: image),
+              ),
+              Positioned(
+                top: 0,
+                right: 0,
+                child: IconButton(
+                  onPressed: () {
+                    onFavoriteToggle();
+                  },
+                  icon: isFavorite
+                      ? const Icon(Icons.favorite, color: Colors.red)
+                      : const Icon(Icons.favorite_border),
+                ),
+              ),
             ],
           ),
         ),

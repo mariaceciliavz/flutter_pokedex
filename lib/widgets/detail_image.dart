@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class DetailImage extends StatelessWidget {
   final String image;
-  const DetailImage({Key? key, required this.image}) : super(key: key);
+  const DetailImage({super.key, required this.image});
   @override
   Widget build(BuildContext context) {
     return Container(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pokedex/api/poke_api.dart';
 import 'package:flutter_pokedex/models/pokemon_models.dart';
 import 'package:flutter_pokedex/widgets/pokemon_grid.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -14,11 +15,14 @@ class _HomeState extends State<HomePage> {
   List<Pokemons> pokemon = List.empty();
   List<Pokemons> filteredPokemon = List.empty();
   String searchText = '';
+  Set<int> favoritePokemonIds = {};
+  bool showOnlyFavorites = false;
 
   @override
   void initState() {
     super.initState();
     getPokemonFromPokeApi();
+    loadFavoritePokemonIds();
   }
 
   void getPokemonFromPokeApi() async {
@@ -31,8 +35,7 @@ class _HomeState extends State<HomePage> {
               "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${element.key + 1}.png";
           return Pokemons.fromJson(element.value);
         }).toList();
-        filteredPokemon =
-            pokemon; // Initialize filteredPokemon with all pokemon
+        filteredPokemon = pokemon;
       });
     });
   }
@@ -40,8 +43,46 @@ class _HomeState extends State<HomePage> {
   void searchPokemon(String query) {
     setState(() {
       searchText = query.toLowerCase();
+      applyFilters();
+    });
+  }
+
+  void loadFavoritePokemonIds() async {
+    final prefs = await SharedPreferences.getInstance();
+    final favoriteIdsString = prefs.getString('favoritePokemonIds');
+    if (favoriteIdsString != null) {
+      final favoriteIdsList =
+          favoriteIdsString.split(',').map(int.parse).toSet();
+      setState(() {
+        favoritePokemonIds = favoriteIdsList;
+      });
+    }
+  }
+
+  void saveFavoritePokemonIds() async {
+    final prefs = await SharedPreferences.getInstance();
+    final favoriteIdsString = favoritePokemonIds.join(',');
+    await prefs.setString('favoritePokemonIds', favoriteIdsString);
+  }
+
+  void toggleFavorite(int pokemonId) {
+    setState(() {
+      if (favoritePokemonIds.contains(pokemonId)) {
+        favoritePokemonIds.remove(pokemonId);
+      } else {
+        favoritePokemonIds.add(pokemonId);
+      }
+      saveFavoritePokemonIds();
+      applyFilters();
+    });
+  }
+
+  void applyFilters() {
+    setState(() {
       filteredPokemon = pokemon
-          .where((pokemon) => pokemon.name.toLowerCase().contains(searchText))
+          .where((pokemon) =>
+              pokemon.name.toLowerCase().contains(searchText) &&
+              (!showOnlyFavorites || favoritePokemonIds.contains(pokemon.id)))
           .toList();
     });
   }
@@ -50,13 +91,23 @@ class _HomeState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Pokedex"),
+        title: const Text("Pokedex",
+            style: TextStyle(
+              color: Colors.white,
+            )),
         backgroundColor: Colors.red,
         leading: const Icon(Icons.menu),
         actions: [
           IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.more_vert),
+            onPressed: () {
+              setState(() {
+                showOnlyFavorites = !showOnlyFavorites;
+                applyFilters();
+              });
+            },
+            icon: Icon(showOnlyFavorites
+                ? Icons.favorite
+                : Icons.favorite_border), // Toggle icon
           ),
         ],
       ),
@@ -76,16 +127,13 @@ class _HomeState extends State<HomePage> {
             ),
           ),
           Expanded(
-            child: PokemonGrid(pokemon: filteredPokemon),
+            child: PokemonGrid(
+              pokemon: filteredPokemon,
+              favoritePokemonIds: favoritePokemonIds,
+              onFavoriteToggle: toggleFavorite,
+            ),
           ),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        tooltip: 'Share',
-        child: const Icon(
-          Icons.share_rounded,
-        ),
       ),
     );
   }

@@ -8,7 +8,7 @@ class DetailBackButton extends StatelessWidget {
       onPressed: () => Navigator.pop(context),
       tooltip: 'Share',
       label: const Text(
-        "Voltar",
+        "Back",
       ),
       icon: const Icon(Icons.arrow_back_ios_new_rounded),
     );

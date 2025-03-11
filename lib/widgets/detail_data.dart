@@ -32,9 +32,7 @@ class _DetailDataState extends State<DetailData> {
           topRight: Radius.circular(71),
         ),
       ),
-      // child: Column(
-      //   children: [Container(child: Text('name'))],
-      // ),
+      //TODO: implementar detalhes do pokemon
     );
   }
 }

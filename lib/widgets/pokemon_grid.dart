@@ -2,14 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pokedex/models/pokemon_models.dart';
 import 'package:flutter_pokedex/widgets/pokemon_card.dart';
 
-class PokemonGrid extends StatefulWidget {
+class PokemonGrid extends StatelessWidget {
   final List<Pokemons> pokemon;
-  const PokemonGrid({super.key, required this.pokemon});
-  @override
-  _PokemonGridState createState() => _PokemonGridState();
-}
+  final Set<int> favoritePokemonIds;
+  final Function(int) onFavoriteToggle;
 
-class _PokemonGridState extends State<PokemonGrid> {
+  const PokemonGrid({
+    super.key,
+    required this.pokemon,
+    required this.favoritePokemonIds,
+    required this.onFavoriteToggle,
+  });
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -28,12 +32,16 @@ class _PokemonGridState extends State<PokemonGrid> {
       semanticChildCount: 250,
       childAspectRatio: 200 / 244,
       physics: const BouncingScrollPhysics(),
-      children: widget.pokemon
+      children: pokemon
           .map(
             (pokemon) => PokemonCard(
               id: pokemon.id,
               name: pokemon.name,
               image: pokemon.imageUrl,
+              isFavorite: favoritePokemonIds.contains(pokemon.id), 
+              onFavoriteToggle: () {
+                onFavoriteToggle(pokemon.id); 
+              },
             ),
           )
           .toList(),

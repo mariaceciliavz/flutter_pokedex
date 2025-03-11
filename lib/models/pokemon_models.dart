@@ -4,7 +4,6 @@ class Pokemons {
   final String imageUrl;
   final int height;
   final int weight;
-  //final List abilities;
 
   Pokemons({
     required this.id,
@@ -21,7 +20,6 @@ class Pokemons {
       imageUrl: json['imageUrl'],
       height: json['height'] ?? 0,
       weight: json['weight'] ?? 0,
-      //abilities: json['abilities'],
     );
   }
 }

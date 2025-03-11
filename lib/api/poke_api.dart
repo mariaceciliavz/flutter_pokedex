@@ -9,10 +9,3 @@ class PokeApi {
     return response.data;
   }
 }
-
-// class DetailsPokeAPI {
-//   static Future<Map<String, dynamic>> getPokemonDetails(int id) async {
-//     final response = await dio.get('https://pokeapi.co/api/v2/pokemon/$id/');
-//     pokedex = decodedJsonData(response.data);
-//   }
-// }
