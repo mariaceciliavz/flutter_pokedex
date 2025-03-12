@@ -44,7 +44,6 @@ class _DetailDataState extends State<DetailData> {
             ),
             child: Column(
               children: [
-                Text('Types: ${state.types.join(', ')}'),
                 Text('Height: ${state.height}'),
                 Text('Weight: ${state.weight}'),
                 Text('Attack: ${state.attack}'),

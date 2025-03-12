@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_pokedex/api/poke_api.dart';
 import 'package:flutter_pokedex/cubit/pokemon_cubit.dart';
 import 'package:flutter_pokedex/cubit/pokemon_states.dart';
 import 'package:flutter_pokedex/models/pokemon_models.dart';
 import 'package:flutter_pokedex/widgets/pokemon_grid.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -108,7 +106,6 @@ class _HomeState extends State<HomePage> {
                 color: Colors.white,
               )),
           backgroundColor: Colors.red,
-          leading: const Icon(Icons.menu),
           actions: [
             IconButton(
               onPressed: () {

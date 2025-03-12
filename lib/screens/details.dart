@@ -14,9 +14,9 @@ class Details extends StatelessWidget {
     final arguments =
         ModalRoute.of(context)!.settings.arguments as PokemonScreenData;
     return BlocProvider(
-      create: (context) => PokemonDetailsCubit(),
+      create: (context) =>
+          PokemonDetailsCubit()..getPokemonDetails(arguments.id),
       child: Scaffold(
-        backgroundColor: Colors.black,
         body: SingleChildScrollView(
           padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
           physics: const BouncingScrollPhysics(),

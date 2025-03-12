@@ -10,11 +10,9 @@ class PokemonDetailsInitial extends PokemonDetailsState {}
 class PokemonDetailsLoading extends PokemonDetailsState {}
 
 class PokemonDetailsLoaded extends PokemonDetailsState {
-
   final int id;
   final String name;
   final String imageUrl;
-  final List<String> types;
   final int height;
   final int weight;
   final int attack;
@@ -27,7 +25,6 @@ class PokemonDetailsLoaded extends PokemonDetailsState {
     required this.id,
     required this.name,
     required this.imageUrl,
-    required this.types,
     required this.height,
     required this.weight,
     required this.attack,
@@ -42,7 +39,6 @@ class PokemonDetailsLoaded extends PokemonDetailsState {
         id,
         name,
         imageUrl,
-        types,
         height,
         weight,
         attack,

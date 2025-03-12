@@ -2,7 +2,6 @@ class PokemondetailsModels {
   final int id;
   final String name;
   final String imageUrl;
-  final List<String> types;
   final int height;
   final int weight;
   final int attack;
@@ -15,7 +14,6 @@ class PokemondetailsModels {
       {required this.id,
       required this.name,
       required this.imageUrl,
-      required this.types,
       required this.height,
       required this.weight,
       required this.attack,
@@ -26,17 +24,16 @@ class PokemondetailsModels {
 
   factory PokemondetailsModels.fromJson(Map<String, dynamic> json) {
     return PokemondetailsModels(
-      id: json['id'],
-      name: json['name'],
-      imageUrl: json['imageUrl'],
-      types: List<String>.from(json['types']),
-      height: json['height'],
-      weight: json['weight'],
-      attack: json['attack'],
-      defense: json['defense'],
-      speed: json['speed'],
-      specialAttack: json['specialAttack'],
-      specialDefense: json['specialDefense'],
+      id: json['id'] ?? 0,
+      name: json['name'] ?? '',
+      imageUrl: json['sprites']['front_default'] ?? '',
+      height: json['height'] ?? 0,
+      weight: json['weight'] ?? 0,
+      attack: json['stats'][1]['base_stat'] ?? 0,
+      defense: json['stats'][2]['base_stat'] ?? 0,
+      speed: json['stats'][5]['base_stat'] ?? 0,
+      specialAttack: json['stats'][3]['base_stat'] ?? 0,
+      specialDefense: json['stats'][4]['base_stat'] ?? 0,
     );
   }
 }
