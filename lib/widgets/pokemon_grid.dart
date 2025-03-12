@@ -38,7 +38,7 @@ class PokemonGrid extends StatelessWidget {
               id: pokemon.id,
               name: pokemon.name,
               image: pokemon.imageUrl,
-              isFavorite: favoritePokemonIds.contains(pokemon.id), 
+              isFavorite: pokemon.isFavorite, 
               onFavoriteToggle: () {
                 onFavoriteToggle(pokemon.id); 
               },
